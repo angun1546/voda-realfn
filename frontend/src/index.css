@@ -43,6 +43,9 @@
   /* 폰트 패밀리 */
   --font-sans: 'Gmarket Sans TTF', system-ui, sans-serif;
   --font-serif: 'Pretendard', system-ui, sans-serif;
+
+  /* GNB 보라 글로우 섀도 */
+  --shadow-glow-purple: 0px 0px 60px 0px rgba(189, 157, 255, 0.1);
 }
 
 @utility scrollbar-hide {
