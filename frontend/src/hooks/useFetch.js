@@ -53,6 +53,7 @@ export default function useFetch(fn, deps = []) {
     return () => {
       alive = false
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fn, ...deps])
 
   return { data, loading, err }

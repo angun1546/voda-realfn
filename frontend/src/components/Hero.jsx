@@ -60,12 +60,17 @@ const Hero = ({
       return anyYoutube ? anyYoutube.key : null
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (videos && videos.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTrailerKey(findBestTrailer(videos))
     } else if (id && type !== 'person' && type !== 'home') {
       EP.detail(type, id).then(res => {
         const vids = res.data.videos?.results
-        setTrailerKey(findBestTrailer(vids))
+        if (vids) {
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setTrailerKey(findBestTrailer(vids))
+        }
       })
     }
   }, [videos, id, type])

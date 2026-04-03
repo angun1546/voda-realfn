@@ -14,14 +14,15 @@ const CastSection = ({ cast = [] }) => {
       </div>
 
       {/* 가로 스크롤 출연진 목록 */}
+      {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
       <div
         ref={drag.ref}
-        onMouseDown={drag.onMouseDown}
-        onMouseMove={drag.onMouseMove}
-        onMouseUp={drag.onMouseUp}
-        onMouseLeave={drag.onMouseLeave}
-        onDragStart={drag.onDragStart}
-        onClickCapture={drag.onClickCapture}
+        onMouseDown={(e) => drag.ref.current && drag.onMouseDown(e)}
+        onMouseMove={(e) => drag.ref.current && drag.onMouseMove(e)}
+        onMouseUp={(e) => drag.ref.current && drag.onMouseUp(e)}
+        onMouseLeave={(e) => drag.ref.current && drag.onMouseLeave(e)}
+        onDragStart={(e) => drag.onDragStart(e)}
+        onClickCapture={(e) => drag.onClickCapture(e)}
         className='flex gap-16 items-start overflow-x-auto px-20 pb-2 scrollbar-hide cursor-grab select-none'
       >
         {cast.map((actor) => (

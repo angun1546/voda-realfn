@@ -16,7 +16,6 @@ const PersonCategoryPage = () => {
   const { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, onDragStart, onClickCapture } = useDragScroll()
 
   useEffect(() => {
-    setLoading(true)
     // 인물 카테고리 데이터를 한꺼번에 많이 가져와서 가로로 길게 배치 (전체보기 느낌)
     EP.browsePerson(category, 1)
       .then(res => {
