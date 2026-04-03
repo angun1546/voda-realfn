@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import { EP } from '../api/tmdb'
+import { getVq } from '../utils/settings'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faPlay, 
@@ -181,12 +182,16 @@ const Hero = ({
           <FontAwesomeIcon icon={faXmark} />
         </button>
         <div className='w-full max-w-6xl aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl'>
+<<<<<<< HEAD
           <iframe 
             src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`} 
             className='w-full h-full' 
             allow='autoplay; fullscreen' 
             title="Trailer" 
           />
+=======
+          <iframe src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1${getVq() ? `&vq=${getVq()}` : ''}`} className='w-full h-full' allowFullScreen title="Trailer" />
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
         </div>
       </div>
     )

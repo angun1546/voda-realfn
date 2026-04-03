@@ -1,5 +1,21 @@
+<<<<<<< HEAD
+=======
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook, faYoutube, faXTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons'
+import useUI from '../hooks/useUI'
+
+const SOCIAL = [
+  { label: 'Facebook',  icon: faFacebook,  href: 'https://www.facebook.com' },
+  { label: 'YouTube',   icon: faYoutube,   href: 'https://www.youtube.com' },
+  { label: 'X',         icon: faXTwitter,  href: 'https://www.x.com' },
+  { label: 'Instagram', icon: faInstagram, href: 'https://www.instagram.com' },
+]
+
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 const Footer = () => {
+  const ui = useUI()
   const footerLinks = [
+<<<<<<< HEAD
     '자막 및 음성', '고객 센터', '기프트카드', '미디어 센터',
     '투자 정보(IR)', '입사 정보', '이용 약관', '개인정보 처리방침',
     '법적 고지', '쿠키 설정', '회사 정보', '문의하기'
@@ -48,6 +64,28 @@ const Footer = () => {
               className='font-serif text-sm hover:text-neutral-200 transition-colors duration-200 w-fit'
             >
               {link}
+=======
+    ui.footerSubtitles, ui.footerAudio, ui.footerHelp, ui.footerGift,
+    ui.footerMedia, ui.footerIR, ui.footerJobs, ui.footerTerms,
+    ui.footerPrivacy, ui.footerLegal, ui.footerCookies, ui.footerInfo, ui.footerContact
+  ]
+
+  return (
+    <footer className='bg-black text-neutral-400 py-16 px-12 border-t border-white/5'>
+      <div className='max-w-content mx-auto'>
+        {/* 소셜 미디어 아이콘 */}
+        <div className='flex gap-6 mb-10 text-neutral-50 text-2xl'>
+          {SOCIAL.map(({ label, icon, href }) => (
+            <a
+              key={label}
+              href={href}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-white/20 rounded-full text-sm'
+              aria-label={label}
+            >
+              <FontAwesomeIcon icon={icon} />
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
             </a>
           ))}
         </div>
@@ -63,6 +101,7 @@ const Footer = () => {
             <span>고객센터: 1588-0000 (평일 09:00~18:00)</span>
           </div>
 
+<<<<<<< HEAD
           <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-2'>
             <p className='text-xs font-serif text-neutral-700 uppercase tracking-widest'>
               © 2026 VODA, Inc. All rights reserved.
@@ -71,10 +110,24 @@ const Footer = () => {
               Service Code: 800-455
             </button>
           </div>
+=======
+        {/* 서비스 코드 및 회사 정보 */}
+        <div className='text-xs leading-5'>
+          <button className='border border-gray-500 px-2 py-1 mb-4 hover:text-white hover:border-white transition-colors'>
+            {ui.footerServiceCode}
+          </button>
+          <p>{ui.footerCompanyName}</p>
+          <p>{ui.footerCEO} | 사업자등록번호: 000-00-00000</p>
+          <p>{ui.footerAddress}</p>
+          <p className='mt-4'>© 1996-2026 VODA, Inc.</p>
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
         </div>
       </div>
     </footer>
   )
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 export default Footer

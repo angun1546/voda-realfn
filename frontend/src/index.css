@@ -124,3 +124,53 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* 페이지 전환 애니메이션 */
+@keyframes anim-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes anim-scale-fade {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes anim-slide-right {
+  from { opacity: 0; transform: translateX(48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes anim-slide-left {
+  from { opacity: 0; transform: translateX(-48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes anim-slide-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-fade        { animation: anim-fade        0.35s ease; }
+.page-scale-fade  { animation: anim-scale-fade  0.4s  ease; }
+.page-slide-right { animation: anim-slide-right 0.35s ease; }
+.page-slide-left  { animation: anim-slide-left  0.35s ease; }
+.page-slide-up    { animation: anim-slide-up    0.4s  ease; }
+
+/* 스크롤 진입 리빌 */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 카드 stagger 진입 */
+.card-enter {
+  opacity: 0;
+  transform: translateY(20px) scale(0.97);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.card-enter.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}

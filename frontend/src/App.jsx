@@ -1,11 +1,9 @@
 import { Outlet, useLocation } from 'react-router'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import GNB from './components/GNB'
 import Footer from './components/Footer'
 import ChatBtn from './components/ChatBtn'
-import ScoreSummary from './components/ScoreSummary';
 
-// 페이지 이동 시 스크롤을 맨 위로 초기화
 const ScrollToTop = () => {
   const { pathname } = useLocation()
   useEffect(() => {
@@ -14,50 +12,33 @@ const ScrollToTop = () => {
   return null
 }
 
-/**
- * Layout: 전역 레이아웃
- * 화면 전체 너비를 1920px로 제한하고 중앙 정렬합니다.
- */
-const Layout = () => {
-  const { pathname } = useLocation();
+const getPageAnim = (pathname) => {
+  if (pathname === '/')                    return 'page-scale-fade'
+  if (pathname === '/movie')               return 'page-slide-right'
+  if (pathname === '/tv')                  return 'page-slide-right'
+  if (pathname.startsWith('/person'))      return 'page-slide-up'
+  if (pathname === '/ask')                 return 'page-slide-left'
+  return 'page-fade'
+}
 
-  // ✅ 현재 경로가 '/ask' 인지 확인 (VODA AI 전용 페이지 여부)
-  const isAskPage = pathname === '/ask';
+const Layout = () => {
+  const { pathname } = useLocation()
+  const animClass = useMemo(() => getPageAnim(pathname), [pathname])
+  const isAskPage = pathname === '/ask'
 
   return (
     <div className='min-h-screen flex flex-col bg-base'>
       <ScrollToTop />
       <GNB />
       <main className='flex-1 w-full max-w-content mx-auto'>
-        <Outlet />
+        <div key={pathname} className={animClass}>
+          <Outlet />
+        </div>
       </main>
       <Footer />
-      
-      {/* ✅ AskPage가 아닐 때만 ChatBtn을 렌더링하도록 조건부 처리 */}
       {!isAskPage && <ChatBtn />}
     </div>
   )
 }
-
-const TestPage = () => {
-  // TMDB 응답 구조와 유사한 테스트 데이터
-  const dummyReviews = [
-    { author_details: { rating: 9 } },
-    { author_details: { rating: 8 } },
-    { author_details: { rating: 10 } },
-    { author_details: { rating: 4 } },
-    { author_details: { rating: 2 } },
-  ];
-
-  return (
-    <div className="p-20 bg-neutral-950"> {/* 배경색이 있어야 흰색 글자가 보입니다 */}
-      <ScoreSummary 
-        avg={8.4} 
-        count={12402} 
-        reviews={dummyReviews} 
-      />
-    </div>
-  );
-};
 
 export default Layout

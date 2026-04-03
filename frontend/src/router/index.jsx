@@ -12,6 +12,8 @@ import SearchPage from '../pages/SearchPage'
 import ProfilePage from '../pages/ProfilePage'
 import FindPage from '../pages/FindPage'
 import BrowsePage from '../pages/BrowsePage'
+import LanguagePage from '../pages/LanguagePage'
+import QualityPage from '../pages/QualityPage'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,8 @@ const router = createBrowserRouter([
       { path: '/profile', element: <ProfilePage /> },
       { path: '/find', element: <FindPage /> },
       { path: '/browse/:mediaType/:category', element: <BrowsePage /> },
+      { path: '/settings/language', element: <LanguagePage /> },
+      { path: '/settings/quality', element: <QualityPage /> },
     ],
   },
 ])

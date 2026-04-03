@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router'
+import useScrollAnim from '../hooks/useScrollAnim'
 
-// SectionTitle: 디자인 유지 및 조건부 '전체보기' 표시
 const SectionTitle = ({ title, subtitle, link = '#', hideAllBtn = false }) => {
   const navigate = useNavigate()
+  const [ref, visible] = useScrollAnim(0.2)
 
   return (
-    <div className='flex items-center w-full py-10'>
+    <div
+      ref={ref}
+      className={`flex items-center w-full py-10 scroll-reveal${visible ? ' is-visible' : ''}`}
+    >
       {/* 왼쪽: 제목 + 부제목 */}
       <div className='flex-1 flex flex-col gap-3'>
 

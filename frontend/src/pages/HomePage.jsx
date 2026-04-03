@@ -1,18 +1,28 @@
 import { useState, useEffect } from 'react'
+<<<<<<< HEAD
 import HeroSwiper from '../components/HeroSwiper'
 import Feed from '../components/Feed' // 통합된 Feed 컴포넌트 임포트
+=======
+import Hero from '../components/Hero'
+import Feed from '../components/Feed'
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 import { EP } from '../api/tmdb'
 import ChatBtn from '../components/ChatBtn'
+import useUI from '../hooks/useUI'
 
 const HomePage = () => {
+<<<<<<< HEAD
   const [heroItems, setHeroItems] = useState([])
+=======
+  const ui = useUI()
+  const [heroMovie, setHeroMovie] = useState(null)
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
   const [popularMovies, setPopularMovies] = useState([])
   const [newMovies, setNewMovies] = useState([])
   const [topRatedMovies, setTopRatedMovies] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // 데이터 페칭 로직
     Promise.all([
       EP.popular('movie'),
       EP.nowPlaying('movie'),
@@ -31,7 +41,7 @@ const HomePage = () => {
     })
   }, [])
 
-  if (loading) return <div className='p-20 text-center text-zinc-500'>로딩 중...</div>
+  if (loading) return <div className='p-20 text-center text-zinc-500'>{ui.loading}</div>
 
   return (
     <div className='bg-neutral-950 min-h-screen pb-32'>
@@ -43,41 +53,41 @@ const HomePage = () => {
         {/* 1. 이어보기 섹션 */}
         <Feed
           type='play'
-          title='시청 중인 콘텐츠'
-          sub='이어보기'
+          title={ui.profileWatching}
+          sub={ui.todayRecommend}
           items={popularMovies.slice(0, 5)}
           mediaType='movie'
-          link='/browse/movie/popular?title=시청+중인+콘텐츠'
+          link={`/browse/movie/popular?title=${encodeURIComponent(ui.profileWatching)}`}
         />
 
         {/* 2. 인기 섹션 */}
         <Feed
           type='rank'
-          title='지금 가장 핫한 콘텐츠'
-          sub='인기 영화'
+          title={ui.trending}
+          sub={ui.popularMovies}
           items={popularMovies}
           mediaType='movie'
-          link='/browse/movie/popular?title=지금+가장+핫한+콘텐츠'
+          link={`/browse/movie/popular?title=${encodeURIComponent(ui.trending)}`}
         />
 
         {/* 3. 신작 섹션 */}
         <Feed
           type='normal'
-          title='막 올라온 따끈한 신작'
-          sub='최신 개봉작'
+          title={ui.nowPlaying}
+          sub={ui.trending}
           items={newMovies}
           mediaType='movie'
-          link='/browse/movie/now_playing?title=막+올라온+따끈한+신작'
+          link={`/browse/movie/now_playing?title=${encodeURIComponent(ui.nowPlaying)}`}
         />
 
         {/* 4. 평점 높은 섹션 */}
         <Feed
           type='normal'
-          title='VODA 유저들이 사랑하는 명작'
-          sub='평점 TOP 영화'
+          title={ui.topRated}
+          sub={ui.weeklyTop}
           items={topRatedMovies}
           mediaType='movie'
-          link='/browse/movie/top_rated?title=VODA+유저들이+사랑하는+명작'
+          link={`/browse/movie/top_rated?title=${encodeURIComponent(ui.topRated)}`}
         />
       </div>
 

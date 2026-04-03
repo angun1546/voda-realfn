@@ -1,7 +1,13 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVolumeXmark, faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 import { EP } from '../api/tmdb'
+<<<<<<< HEAD
 import useFetch from '../hooks/useFetch'
+=======
+import { getVq } from '../utils/settings'
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 
 const HCard = ({
   id,
@@ -16,8 +22,14 @@ const HCard = ({
   const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)
   const [trailerKey, setTrailerKey] = useState(null)
+<<<<<<< HEAD
+=======
+  const [overview, setOverview] = useState('')
+  const [muted, setMuted] = useState(true)
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
   const timerRef = useRef(null)
   const fetched = useRef(false)
+  const iframeRef = useRef(null)
 
   // 마운트 시 detail 미리 로드 — 장르·상영시간·개요 즉시 표시
   const { data: detail } = useFetch(() => EP.detail(type, id), [id])
@@ -55,7 +67,25 @@ const HCard = ({
 
   const handleMouseLeave = () => {
     clearTimeout(timerRef.current)
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: 'mute', args: [] }),
+        '*'
+      )
+    }
     setHovered(false)
+    setMuted(true)
+  }
+
+  const toggleMute = (e) => {
+    e.stopPropagation()
+    if (!iframeRef.current) return
+    const next = !muted
+    iframeRef.current.contentWindow.postMessage(
+      JSON.stringify({ event: 'command', func: next ? 'mute' : 'unMute', args: [] }),
+      '*'
+    )
+    setMuted(next)
   }
 
   return (
@@ -103,14 +133,25 @@ const HCard = ({
           }`}
         >
           {/* 예고편 (16:9) */}
-          <div className='w-full aspect-video shrink-0 bg-neutral-900'>
-            {trailerKey ? (
-              <iframe
-                src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}`}
-                className='w-full h-full'
-                allow='autoplay'
-                title={title}
-              />
+          <div className='relative w-full aspect-video shrink-0 bg-neutral-900'>
+            {hovered && trailerKey ? (
+              <>
+                <iframe
+                  ref={iframeRef}
+                  src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}&enablejsapi=1${getVq() ? `&vq=${getVq()}` : ''}`}
+                  className='w-full h-full'
+                  allow='autoplay'
+                  title={title}
+                />
+                {/* 음소거 토글 버튼 */}
+                <button
+                  onClick={toggleMute}
+                  className='absolute bottom-2 right-2 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-black/60 text-white text-xs hover:bg-black/80 transition-colors'
+                  aria-label={muted ? '소리 켜기' : '소리 끄기'}
+                >
+                  <FontAwesomeIcon icon={muted ? faVolumeXmark : faVolumeHigh} />
+                </button>
+              </>
             ) : (
               <div className='w-full h-full flex items-center justify-center'>
                 <i className='fa-solid fa-film text-neutral-700 text-3xl' />

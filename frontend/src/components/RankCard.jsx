@@ -1,14 +1,19 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router'
 import { twMerge } from 'tailwind-merge'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVolumeXmark, faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 import { EP } from '../api/tmdb'
+import { getVq } from '../utils/settings'
 
 const RankCard = ({ rank, id, type = 'movie', title, poster, genre, onClick }) => {
   const [hovered, setHovered] = useState(false)
   const [trailerKey, setTrailerKey] = useState(null)
   const [overview, setOverview] = useState('')
+  const [muted, setMuted] = useState(true)
   const timerRef = useRef(null)
   const fetched = useRef(false)
+  const iframeRef = useRef(null)
 
   const findTrailer = (vids) => {
     if (!vids || vids.length === 0) return null
@@ -54,7 +59,26 @@ const RankCard = ({ rank, id, type = 'movie', title, poster, genre, onClick }) =
 
   const handleMouseLeave = () => {
     clearTimeout(timerRef.current)
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: 'mute', args: [] }),
+        '*'
+      )
+    }
     setHovered(false)
+    setMuted(true)
+  }
+
+  const toggleMute = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!iframeRef.current) return
+    const next = !muted
+    iframeRef.current.contentWindow.postMessage(
+      JSON.stringify({ event: 'command', func: next ? 'mute' : 'unMute', args: [] }),
+      '*'
+    )
+    setMuted(next)
   }
 
   const handleClick = onClick ? (e) => { e.preventDefault(); onClick() } : undefined
@@ -93,14 +117,25 @@ const RankCard = ({ rank, id, type = 'movie', title, poster, genre, onClick }) =
           )}
         >
           {/* 예고편 영역 */}
-          <div className='w-full aspect-video shrink-0 bg-neutral-900'>
-            {trailerKey ? (
-              <iframe
-                src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}`}
-                className='w-full h-full'
-                allow='autoplay'
-                title={title}
-              />
+          <div className='relative w-full aspect-video shrink-0 bg-neutral-900'>
+            {hovered && trailerKey ? (
+              <>
+                <iframe
+                  ref={iframeRef}
+                  src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}&enablejsapi=1${getVq() ? `&vq=${getVq()}` : ''}`}
+                  className='w-full h-full'
+                  allow='autoplay'
+                  title={title}
+                />
+                {/* 음소거 토글 버튼 */}
+                <button
+                  onClick={toggleMute}
+                  className='absolute bottom-2 right-2 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-black/60 text-white text-xs hover:bg-black/80 transition-colors'
+                  aria-label={muted ? '소리 켜기' : '소리 끄기'}
+                >
+                  <FontAwesomeIcon icon={muted ? faVolumeXmark : faVolumeHigh} />
+                </button>
+              </>
             ) : (
               <div className='w-full h-full flex items-center justify-center'>
                 <i className='fa-solid fa-film text-neutral-700 text-3xl' />

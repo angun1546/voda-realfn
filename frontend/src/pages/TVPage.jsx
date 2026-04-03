@@ -4,10 +4,12 @@ import GenreTab from '../components/GenreTab'
 import Feed from '../components/Feed'
 import { EP } from '../api/tmdb'
 import ChatBtn from '../components/ChatBtn'
+import useUI from '../hooks/useUI'
 
 const TVPage = () => {
+  const ui = useUI()
   const [heroMovie, setHeroMovie] = useState(null)
-  const [genres, setGenres] = useState([{ id: 0, name: '전체' }])
+  const [genres, setGenres] = useState([{ id: 0, name: ui.viewAll }])
   const [activeTab, setActiveTab] = useState(0)
   
   const [rankMovies, setRankMovies] = useState([])
@@ -17,7 +19,7 @@ const TVPage = () => {
 
   useEffect(() => {
     EP.genres('tv').then((res) => {
-      setGenres([{ id: 0, name: '전체' }, ...res.data.genres])
+      setGenres([{ id: 0, name: ui.viewAll }, ...res.data.genres])
     })
 
     EP.popular('tv').then((res) => {
@@ -30,7 +32,7 @@ const TVPage = () => {
     EP.nowPlaying('tv').then((res) => {
       setNewMovies(res.data.results)
     })
-  }, [])
+  }, [ui.viewAll])
 
   useEffect(() => {
     const params = activeTab !== 0 ? { with_genres: activeTab } : {}
@@ -39,11 +41,10 @@ const TVPage = () => {
     })
   }, [activeTab])
 
-  if (loading) return <div className='p-20 text-center text-zinc-500'>로딩 중...</div>
+  if (loading) return <div className='p-20 text-center text-zinc-500'>{ui.loading}</div>
 
   return (
     <div className='bg-neutral-950 min-h-screen pb-32'>
-      {/* 히어로 섹션 */}
       {heroMovie && (
         <Hero
           type='tv'
@@ -56,48 +57,41 @@ const TVPage = () => {
         />
       )}
 
-      {/* 장르 탭 */}
-      <GenreTab 
-        tabs={genres} 
-        active={activeTab} 
-        onChange={setActiveTab} 
-      />
+      <GenreTab tabs={genres} active={activeTab} onChange={setActiveTab} />
 
       <div className='px-12 mt-12 flex flex-col gap-10'>
-        {/* 1. 랭킹 피드 */}
         {activeTab === 0 && (
           <Feed
             type='rank'
-            title='지금 가장 뜨거운 TV'
-            sub='VODA에서 가장 많이 찾은 TV 랭킹'
+            title={ui.trending}
+            sub={ui.popularMovies}
             items={rankMovies}
             mediaType='tv'
-            link='/browse/tv/popular?title=지금+가장+뜨거운+TV'
+            link={`/browse/tv/popular?title=${encodeURIComponent(ui.trending)}`}
           />
         )}
 
-        {/* 2. 장르별/전체 피드 */}
         <Feed
+          key={activeTab}
           type='normal'
-          title={activeTab === 0 ? '추천 TV' : `${genres.find(g => g.id === activeTab)?.name} TV`}
-          sub='당신을 위해 엄선한 명작들'
+          title={activeTab === 0 ? ui.todayRecommend : `${genres.find(g => g.id === activeTab)?.name} TV`}
+          sub={ui.todayRecommend}
           items={genreMovies}
           mediaType='tv'
           link={
             activeTab === 0
-              ? '/browse/tv/discover?title=추천+TV'
+              ? `/browse/tv/discover?title=${encodeURIComponent(ui.todayRecommend)}`
               : `/browse/tv/discover?title=${encodeURIComponent(genres.find(g => g.id === activeTab)?.name + ' TV')}&genre=${activeTab}`
           }
         />
 
-        {/* 3. 신작 피드 */}
         <Feed
           type='normal'
-          title='막 올라온 따끈한 신작'
-          sub='지금 방영 중인 최신 TV 시리즈'
+          title={ui.nowPlaying}
+          sub={ui.trending}
           items={newMovies}
           mediaType='tv'
-          link='/browse/tv/on_the_air?title=막+올라온+따끈한+신작'
+          link={`/browse/tv/on_the_air?title=${encodeURIComponent(ui.nowPlaying)}`}
         />
       </div>
 

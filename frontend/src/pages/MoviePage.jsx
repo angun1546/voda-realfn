@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react'
 import Hero from '../components/Hero'
 import GenreTab from '../components/GenreTab'
 import Feed from '../components/Feed'
-import ChatBubble from '../components/ChatBubble' // ChatBubble 추가
 import { EP } from '../api/tmdb'
 import ChatBtn from '../components/ChatBtn'
+import useUI from '../hooks/useUI'
 
 const MoviePage = () => {
+  const ui = useUI()
   const [heroMovie, setHeroMovie] = useState(null)
-  const [genres, setGenres] = useState([{ id: 0, name: '전체' }])
+  const [genres, setGenres] = useState([{ id: 0, name: ui.viewAll }])
   const [activeTab, setActiveTab] = useState(0)
   
   const [rankMovies, setRankMovies] = useState([])
@@ -17,12 +18,10 @@ const MoviePage = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // 1. 장르 목록 가져오기
     EP.genres('movie').then((res) => {
-      setGenres([{ id: 0, name: '전체' }, ...res.data.genres])
+      setGenres([{ id: 0, name: ui.viewAll }, ...res.data.genres])
     })
 
-    // 2. 히어로 및 랭킹 데이터
     EP.popular('movie').then((res) => {
       const results = res.data.results
       setHeroMovie(results[Math.floor(Math.random() * results.length)])
@@ -30,13 +29,11 @@ const MoviePage = () => {
       setLoading(false)
     })
 
-    // 3. 최신 개봉작
     EP.nowPlaying('movie').then((res) => {
       setNewMovies(res.data.results)
     })
-  }, [])
+  }, [ui.viewAll])
 
-  // 장르 탭 변경 시 해당 장르 영화 가져오기
   useEffect(() => {
     const params = activeTab !== 0 ? { with_genres: activeTab } : {}
     EP.discover('movie', params).then((res) => {
@@ -44,11 +41,10 @@ const MoviePage = () => {
     })
   }, [activeTab])
 
-  if (loading) return <div className='p-20 text-center text-zinc-500'>로딩 중...</div>
+  if (loading) return <div className='p-20 text-center text-zinc-500'>{ui.loading}</div>
 
   return (
     <div className='bg-neutral-950 min-h-screen pb-32'>
-      {/* 히어로 섹션 */}
       {heroMovie && (
         <Hero
           type='movie'
@@ -61,50 +57,46 @@ const MoviePage = () => {
         />
       )}
 
-      {/* 장르 탭 */}
-      <GenreTab 
-        tabs={genres} 
-        active={activeTab} 
-        onChange={setActiveTab} 
-      />
+      <GenreTab tabs={genres} active={activeTab} onChange={setActiveTab} />
 
       <div className='px-12 mt-12 flex flex-col gap-10'>
-        {/* 1. 랭킹 피드 */}
         {activeTab === 0 && (
           <Feed
             type='rank'
-            title='지금 가장 뜨거운 영화'
-            sub='VODA에서 가장 많이 찾은 영화 랭킹'
+            title={ui.trending}
+            sub={ui.popularMovies}
             items={rankMovies}
             mediaType='movie'
-            link='/browse/movie/popular?title=지금+가장+뜨거운+영화'
+            link={`/browse/movie/popular?title=${encodeURIComponent(ui.trending)}`}
           />
         )}
 
-        {/* 2. 장르별/전체 피드 */}
         <Feed
+          key={activeTab}
           type='normal'
-          title={activeTab === 0 ? '추천 영화' : `${genres.find(g => g.id === activeTab)?.name} 영화`}
-          sub='당신을 위해 엄선한 명작들'
+          title={activeTab === 0 ? ui.todayRecommend : `${genres.find(g => g.id === activeTab)?.name} ${ui.movie}`}
+          sub={ui.todayRecommend}
           items={genreMovies}
           mediaType='movie'
           link={
             activeTab === 0
-              ? '/browse/movie/discover?title=추천+영화'
-              : `/browse/movie/discover?title=${encodeURIComponent(genres.find(g => g.id === activeTab)?.name + ' 영화')}&genre=${activeTab}`
+              ? `/browse/movie/discover?title=${encodeURIComponent(ui.todayRecommend)}`
+              : `/browse/movie/discover?title=${encodeURIComponent(genres.find(g => g.id === activeTab)?.name + ' ' + ui.movie)}&genre=${activeTab}`
           }
         />
 
-        {/* 3. 신작 피드 */}
         <Feed
           type='normal'
-          title='막 올라온 따끈한 신작'
-          sub='극장에서 갓 내려온 최신 영화들'
+          title={ui.nowPlaying}
+          sub={ui.trending}
           items={newMovies}
           mediaType='movie'
-          link='/browse/movie/now_playing?title=막+올라온+따끈한+신작'
+          link={`/browse/movie/now_playing?title=${encodeURIComponent(ui.nowPlaying)}`}
         />
+<<<<<<< HEAD
 
+=======
+>>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
       </div>
 
       <ChatBtn />

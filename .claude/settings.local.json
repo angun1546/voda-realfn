@@ -15,7 +15,10 @@
       "Bash(ls /c/Users/Administrator/Desktop/VODA/frontend/.env*)",
       "Bash(git stash:*)",
       "Bash(node --input-type=module:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm install:*)",
+      "Bash(npx eslint:*)",
+      "Bash(grep:*)"
     ]
   }
 }
