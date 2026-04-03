@@ -11,25 +11,7 @@ import Feed from '../components/Feed'
 
 // 1. '인기 감독' -> '인기 크리에이터'로 명칭 변경
 const TABS = [
-<<<<<<< HEAD
-  { id: 'trending', name: '오늘의 트렌딩' },
-  { id: 'popular', name: '인기 인물' },
-  { id: 'actor', name: '인기 배우' },
-  { id: 'director', name: '인기 감독' },
-]
 
-const PersonPage = () => {
-  const [trending, setTrending] = useState([])
-  const [popular, setPopular] = useState([])
-  const [activeTab, setActiveTab] = useState('trending')
-  const [loading, setLoading] = useState(true)
-  const [actors, setActors] = useState([])
-  const [directors, setDirectors] = useState([])
-  const [weekTrending, setWeekTrending] = useState([])
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [searchLoading, setSearchLoading] = useState(false)
-=======
   { id: "popular", name: "인기 인물" },
   { id: "actor", name: "인기 배우" },
   { id: "creator", name: "인기 크리에이터" },
@@ -46,7 +28,7 @@ const PersonPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
+
 
   useEffect(() => {
     Promise.all([
@@ -56,16 +38,7 @@ const PersonPage = () => {
       EP.browsePerson('popular', 2),
     ])
       .then(([trendRes, popRes, weekRes, pop2Res]) => {
-<<<<<<< HEAD
-        const pop = popRes.data.results
-        const popAll = [...pop, ...(pop2Res.data.results || [])]
-        setTrending(trendRes.data.results)
-        setPopular(pop)
-        setActors(popAll.filter((p) => p.known_for_department === 'Acting'))
-        setDirectors(popAll.filter((p) => p.known_for_department === 'Directing'))
-        setWeekTrending(weekRes.data.results)
-        setLoading(false)
-=======
+
         const pop = popRes.data.results;
         const popAll = [...pop, ...(pop2Res.data.results || [])];
         setTrending(trendRes.data.results);
@@ -74,13 +47,11 @@ const PersonPage = () => {
         setDirectors(popAll.filter((p) => p.known_for_department !== "Acting")); // 배우 제외 전체
         setWeekTrending(weekRes.data.results);
         setLoading(false);
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
       })
       .catch(console.error)
   }, [])
 
-<<<<<<< HEAD
-=======
+
   // 2. 필터링 로직 수정: 'creator' 선택 시 배우(Acting)만 제외하고 모두 포함
   const getFilteredItems = (data) => {
     if (activeTab === "popular") return data;
@@ -98,7 +69,6 @@ const PersonPage = () => {
     return filtered.length > 0 ? filtered : data;
   };
 
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
   const handleSearch = (q) => {
     const query = q?.trim() || ''
     setSearchQuery(query)
@@ -112,14 +82,11 @@ const PersonPage = () => {
       setSearchLoading(false)
       return
     }
-<<<<<<< HEAD
-  }
+  }, [searchQuery])
 
   useEffect(() => {
     const query = searchQuery?.trim()
     if (!query) return
-=======
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
 
     const timer = setTimeout(() => {
       setSearchLoading(true)
@@ -142,19 +109,7 @@ const PersonPage = () => {
     setSearchResults([])
     setSearchLoading(false)
   }
-
-<<<<<<< HEAD
-  const persons =
-    activeTab === 'trending'
-      ? trending
-      : activeTab === 'popular'
-        ? popular
-        : activeTab === 'actor'
-          ? actors
-          : directors
-=======
   const persons = getFilteredItems(activeTab === "popular" ? popular : trending);
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
 
   if (loading)
     return <div className='p-20 text-center text-zinc-500'>로딩 중...</div>
@@ -166,17 +121,7 @@ const PersonPage = () => {
   }))
 
   return (
-<<<<<<< HEAD
-    <div className='bg-zinc-950 min-h-screen pb-32'>
-      <section className='relative min-h-125 pt-32 pb-16 overflow-hidden'>
-        <div className='absolute top-0 right-0 w-2/5 h-full pointer-events-none'>
-          <div className='absolute top-1/4 right-0 w-96 h-96 bg-primary-600 opacity-20 rounded-full blur-3xl' />
-          <div className='absolute top-1/3 right-24 w-64 h-64 bg-blue-600 opacity-15 rounded-full blur-3xl' />
-        </div>
 
-        <div className='relative z-10 max-w-screen-2xl mx-auto px-20 flex flex-col items-center text-center'>
-          <p className='text-xs font-semibold tracking-widest text-primary-400 uppercase mb-4'>
-=======
     <div className="bg-zinc-950 min-h-screen pb-32">
       <section className="relative min-h-125 pt-32 pb-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-2/5 h-full pointer-events-none">
@@ -186,26 +131,16 @@ const PersonPage = () => {
 
         <div className="relative z-10 max-w-screen-2xl mx-auto px-20 flex flex-col items-center text-center">
           <p className="text-xs font-semibold tracking-widest text-primary-400 uppercase mb-4">
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
             ETHEREAL PROFILES
           </p>
           <h1 className='text-8xl font-bold text-zinc-50 font-serif leading-tight mb-6'>
             사람을 보다
           </h1>
-<<<<<<< HEAD
-          <p className='text-base text-zinc-400 leading-relaxed mb-10 max-w-4xl mx-auto w-full'>
-=======
           <p className=" text-zinc-400 leading-relaxed mb-10 max-w-4xl mx-auto w-full">
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
             VODA가 주목하는 스크린 뒤의 빛나는 주역들. 시대를 대표하는 배우와
             감독들을 만나보세요.
           </p>
-
-<<<<<<< HEAD
-          <div className='w-full max-w-4xl'>
-=======
           <div className="w-full max-w-4xl">
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
             <SearchBar
               variant='normal'
               placeholder='배우, 감독 이름을 검색해보세요.'
@@ -224,29 +159,17 @@ const PersonPage = () => {
       </section>
 
       {searchQuery && (
-<<<<<<< HEAD
-        <div className='px-12 mt-8'>
-          <div className='flex items-center justify-between mb-8'>
-            <div className='flex items-center gap-2.5'>
-              <div className='w-3 h-12 bg-primary-400 rounded-full shrink-0' />
-              <h2 className='font-serif font-bold text-3xl text-neutral-50'>
-=======
         <div className="px-12 mt-8">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-2.5">
               <div className="w-3 h-12 bg-primary-400 rounded-full shrink-0" />
               <h2 className="font-serif font-bold text-3xl text-neutral-50">
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
                 '{searchQuery}' 검색 결과
               </h2>
             </div>
             <button
               onClick={clearSearch}
-<<<<<<< HEAD
-              className='flex items-center gap-2 text-neutral-400 hover:text-primary-400 transition-colors font-serif text-base'
-=======
               className="flex items-center gap-2 text-neutral-400 hover:text-primary-400 transition-colors font-serif "
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
             >
               <i className='fa-solid fa-xmark' />
               검색 초기화
@@ -288,17 +211,6 @@ const PersonPage = () => {
           type='person'
           title='오늘의 트렌딩 인물'
           items={persons}
-<<<<<<< HEAD
-          mediaType='person'
-          link='/person/category?title=오늘의+트렌딩+인물&category=trending_day'
-        />
-        <Feed
-          type='person'
-          title='이번 주 트렌딩 인물'
-          items={weekTrending}
-          mediaType='person'
-          link='/person/category?title=이번+주+트렌딩+인물&category=trending_week'
-=======
           mediaType="person"
           link={`/person/category?title=오늘의+트렌딩+인물&category=${activeTab}`}
         />
@@ -308,7 +220,6 @@ const PersonPage = () => {
           items={getFilteredItems(weekTrending)}
           mediaType="person"
           link={`/person/category?title=이번+주+트렌딩+인물&category=${activeTab}_week`}
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
         />
       </div>
       )}
@@ -350,8 +261,4 @@ const PersonPage = () => {
   )
 }
 
-<<<<<<< HEAD
-export default PersonPage
-=======
 export default PersonPage;
->>>>>>> c8092309928a334ae501d21a7a6e8b1133eed438
