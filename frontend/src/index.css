@@ -1,14 +1,77 @@
 @import "tailwindcss";
 
 @theme {
+  /* 색상 — Primary (보라) */
+  --color-primary-50: #F5F3FF;
+  --color-primary-100: #EDE9FE;
+  --color-primary-200: #DDD6FE;
+  --color-primary-300: #C4B5FD;
   --color-primary-400: #A78BFA;
-  --color-zinc-400: #A1A1AA;
-  --color-zinc-800: #27272A;
-  --color-zinc-900: #18181B;
-  --color-zinc-950: #0A0A0A;
+  --color-primary-500: #8B5CF6;
+  --color-primary-600: #7C3AED;
+  --color-primary-700: #6D28D9;
+  --color-primary-800: #5B21B6;
+  --color-primary-900: #4C1D95;
+  --color-primary-950: #2E1065;
 
-  --font-sans: "Gmarket Sans TTF", system-ui, sans-serif;
-  --font-serif: "Pretendard", serif;
+  /* 색상 — Secondary (핑크) */
+  --color-secondary-50: #FDF2F8;
+  --color-secondary-100: #FCE7F3;
+  --color-secondary-200: #FBCFE8;
+  --color-secondary-300: #F9A8D4;
+  --color-secondary-400: #F472B6;
+  --color-secondary-500: #EC4899;
+  --color-secondary-600: #DB2777;
+  --color-secondary-700: #BE185D;
+  --color-secondary-800: #9D174D;
+  --color-secondary-900: #831843;
+  --color-secondary-950: #500724;
+
+  /* 색상 — Neutral */
+  --color-neutral-50: #FAFAFA;
+  --color-neutral-100: #F4F4F5;
+  --color-neutral-200: #E4E4E7;
+  --color-neutral-300: #D4D4D8;
+  --color-neutral-400: #A1A1AA;
+  --color-neutral-500: #71717A;
+  --color-neutral-600: #52525B;
+  --color-neutral-700: #3F3F46;
+  --color-neutral-800: #27272A;
+  --color-neutral-900: #18181B;
+  --color-neutral-950: #0A0A0A;
+
+  /* 폰트 패밀리 */
+  --font-sans: 'Gmarket Sans TTF', system-ui, sans-serif;
+  --font-serif: 'Pretendard', system-ui, sans-serif;
+
+  /* GNB 보라 글로우 섀도 */
+  --shadow-glow-purple: 0px 0px 60px 0px rgba(189, 157, 255, 0.1);
+
+  /* 프로필 아바타 글로우 섀도 */
+  --shadow-glow-avatar: 0px 0px 30px 0px rgba(189, 157, 255, 0.4);
+
+  /* 배경 기본 색상 */
+  --color-base: #0e0e13;
+
+  /* 콘텐츠 최대 너비 (1920px) */
+  --max-width-content: 120rem;
+
+  /* 카드 너비 */
+  --width-card-sm: 22.5rem;
+  --width-card-md: 25.625rem;
+  --spacing-110: 27.5rem;
+
+  /* VODA 추가 토큰 — 임의값 방지 */
+  --radius-18: 1.125rem;
+  --radius-36: 2.25rem;
+  --border-width-1.5: 1.5px;
+  
+  /* 자간 및 행간 */
+  --letter-spacing-widest-plus: 0.1rem; /* 1.6px */
+  --leading-60: 3.75rem; /* 60px */
+
+  /* 폰트 사이즈 */
+  --font-size-2xs: 0.625rem; /* 10px */
 }
 
 @utility scrollbar-hide {
@@ -20,113 +83,94 @@
 }
 
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
+  background: #0e0e13;
+  color: white;
+  font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* 사이트 전체 스크롤바 숨김 (기능은 유지) */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 body {
   margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* 텍스트 줄바꿈 방지 및 스크롤바 숨김 유틸리티 */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+/* 페이지 전환 애니메이션 */
+@keyframes anim-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+@keyframes anim-scale-fade {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
 }
-p {
-  margin: 0;
+@keyframes anim-slide-right {
+  from { opacity: 0; transform: translateX(48px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+@keyframes anim-slide-left {
+  from { opacity: 0; transform: translateX(-48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes anim-slide-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.page-fade        { animation: anim-fade        0.35s ease; }
+.page-scale-fade  { animation: anim-scale-fade  0.4s  ease; }
+.page-slide-right { animation: anim-slide-right 0.35s ease; }
+.page-slide-left  { animation: anim-slide-left  0.35s ease; }
+.page-slide-up    { animation: anim-slide-up    0.4s  ease; }
+
+/* 스크롤 진입 리빌 */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 카드 stagger 진입 */
+.card-enter {
+  opacity: 0;
+  transform: translateY(20px) scale(0.97);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.card-enter.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }

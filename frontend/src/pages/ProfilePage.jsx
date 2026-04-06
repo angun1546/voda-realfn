@@ -1,9 +1,126 @@
-// TODO: 사용자 프로필 페이지 구현
+import { useState, useEffect } from 'react'
+import Feed from '../components/Feed'
+import { EP } from '../api/tmdb'
+import ProfileGrid from '../components/ProfileGrid'
+import ReviewCard from '../components/ReviewCard'
+import SectionTitle from '../components/SectionTitle'
+import useUI from '../hooks/useUI'
+
+// 내가 작성한 리뷰 예시 데이터 (TMDB 실제 경로와 매칭)
+const myReviews = [
+  {
+    id: 1,
+    title: '라라랜드',
+    image: '/uDO8v217STjInpUoj0DAn3i9hoM.jpg',
+    date: '2026.04.02',
+    rating: 10,
+    content: '올해 본 영화 중 최고입니다! 연출, 연기, 스토리 모두 완벽했어요.',
+  },
+  {
+    id: 2,
+    title: '어벤져스: 엔드게임',
+    image: '/or06vSydvSpgvJJqFAq0uUqSJxX.jpg',
+    date: '2026.03.28',
+    rating: 8,
+    content: '전체적으로 재밌게 봤습니다. 다만 초반 빌드업이 조금 지루한 감이 있어서 아쉬웠어요.',
+  },
+  {
+    id: 3,
+    title: '인셉션',
+    image: '/edv5bs1pS9S0S6TYYp6S3p6QE0S.jpg',
+    date: '2026.02.15',
+    rating: 6,
+    content: '기대가 너무 컸던 탓일까요? 배우들의 연기는 훌륭했지만, 스토리가 너무 복잡해서 아쉬움이 남습니다.',
+  },
+  {
+    id: 4,
+    title: '기생충',
+    image: '/7IiTTjMvSssUvB90ZphuGhHqSmn.jpg',
+    date: '2026.01.05',
+    rating: 9,
+    content: '영상미가 정말 압도적입니다! 스크린에서 눈을 뗄 수가 없었어요.',
+  }
+]
+
+// 가상 사용자 데이터
+const mockUser = {
+  name: 'VODA 마스터',
+  email: 'voda_master@voda.ai',
+  isSubscribed: true
+}
+
 const ProfilePage = () => {
+  const ui = useUI()
+  const [popularMovies, setPopularMovies] = useState([])
+  const [showAllReviews, setShowAllReviews] = useState(false)
+  
+  useEffect(() => {
+    // TMDB 인기 영화 데이터를 가져와 '시청 중인 콘텐츠' 대용으로 사용
+    EP.popular('movie')
+      .then((res) => {
+        // Feed 컴포넌트 내부에서 EP.img()를 호출하므로 원본 데이터를 그대로 세팅
+        setPopularMovies(res.data.results)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }, [])
+
   return (
-    <div className='text-white px-12 py-16'>
-      <h1 className='text-3xl font-bold'>프로필</h1>
-      <p className='text-white/50 mt-2'>준비 중입니다.</p>
+    <div className='text-white px-12 py-16 bg-neutral-950 min-h-screen'>
+      
+      {/* 시청 중인 콘텐츠 섹션 (Feed) */}
+      {popularMovies.length > 0 && (
+        <Feed
+          type='play' 
+          title={ui.profileWatching}
+          subtitle=''
+          items={popularMovies.slice(0, 5)}
+          mediaType='movie'
+          link={`/browse/movie/popular?title=${ui.profileWatching}`}
+        />
+      )}
+
+      {/* 내가 작성한 리뷰 섹션 */}
+      <section className='my-16'>
+        <SectionTitle title={ui.profileMyReviews} hideAllBtn={true} />
+
+        <div className='grid grid-cols-1 gap-4 w-full mt-4'>
+          {(showAllReviews ? myReviews : myReviews.slice(0, 2)).map(review => (
+            <ReviewCard 
+              key={review.id}
+              title={review.title}
+              // 사진 대신 회색 배경의 기본 아이콘 사용
+              image={null} 
+              date={review.date}
+              rating={review.rating}
+              content={review.content}
+            />
+          ))}
+
+          {myReviews.length > 2 && (
+            <button 
+              onClick={() => setShowAllReviews(!showAllReviews)}
+              className='mt-6 mx-auto w-fit px-10 py-2.5 rounded-full border border-white/10 bg-zinc-900/50 text-zinc-400 font-serif text-sm hover:bg-zinc-800 hover:text-primary-400 hover:border-primary-400/30 transition-all cursor-pointer flex items-center gap-2'
+            >
+              <span>{showAllReviews ? ui.profileHideReviews : `${ui.profileMoreReviews} (${myReviews.length - 2})`}</span>
+              <i className={`fa-solid fa-chevron-${showAllReviews ? 'up' : 'down'} text-[10px]`} />
+            </button>
+          )}
+        </div>
+      </section>
+
+      {/* 프로필 설정 섹션 타이틀 */}
+      <section className='my-16'>
+        <SectionTitle title={ui.profileSettings} hideAllBtn={true} />
+
+        <div className='mt-4'>
+          <ProfileGrid
+            user={mockUser}
+            onLogout={() => alert('로그아웃 클릭!')}
+          />
+        </div>
+      </section>
     </div>
   )
 }
