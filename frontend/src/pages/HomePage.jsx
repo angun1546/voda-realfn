@@ -1,22 +1,13 @@
 import { useState, useEffect } from 'react'
-<<<<<<< HEAD
 import HeroSwiper from '../components/HeroSwiper'
-import Feed from '../components/Feed' // 통합된 Feed 컴포넌트 임포트
-=======
-import Hero from '../components/Hero'
 import Feed from '../components/Feed'
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 import { EP } from '../api/tmdb'
 import ChatBtn from '../components/ChatBtn'
 import useUI from '../hooks/useUI'
 
 const HomePage = () => {
-<<<<<<< HEAD
-  const [heroItems, setHeroItems] = useState([])
-=======
   const ui = useUI()
-  const [heroMovie, setHeroMovie] = useState(null)
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
+  const [heroItems, setHeroItems] = useState([])
   const [popularMovies, setPopularMovies] = useState([])
   const [newMovies, setNewMovies] = useState([])
   const [topRatedMovies, setTopRatedMovies] = useState([])
@@ -54,7 +45,7 @@ const HomePage = () => {
         <Feed
           type='play'
           title={ui.profileWatching}
-          sub={ui.todayRecommend}
+          subtitle={ui.todayRecommend}
           items={popularMovies.slice(0, 5)}
           mediaType='movie'
           link={`/browse/movie/popular?title=${encodeURIComponent(ui.profileWatching)}`}
@@ -74,7 +65,7 @@ const HomePage = () => {
         <Feed
           type='normal'
           title={ui.nowPlaying}
-          sub={ui.trending}
+          subtitle={ui.trending}
           items={newMovies}
           mediaType='movie'
           link={`/browse/movie/now_playing?title=${encodeURIComponent(ui.nowPlaying)}`}

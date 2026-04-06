@@ -4,26 +4,6 @@ import useUI from '../hooks/useUI'
 
 const BACKEND = 'https://vodamovie.onrender.com/chat'
 
-<<<<<<< HEAD
-const INIT_MESSAGES = [
-  { 
-    id: 1, 
-    role: 'ai', 
-    text: '안녕하세요! 당신만의 영화 큐레이터 VODA AI입니다.\n오늘의 기분이나 선호하는 장르를 말씀해 주시면 딱 맞는 콘텐츠를 추천해 드릴게요.' 
-  },
-]
-
-const QUICK_PROMPTS = [
-  '🍿 비 오는 날 어울리는 로맨스',
-  '🔥 요즘 인기있는 영화 보여줘',
-  '🔍 긴장감 넘치는 스릴러 영화',
-  '👨‍👩‍👧‍👦 가족과 보기 좋은 애니메이션',
-  '📺 정주행하기 좋은 한국 드라마',
-  '🤣 퇴근 후 웃기 좋은 코미디'
-]
-
-=======
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 const AskPage = () => {
   const ui = useUI()
 
@@ -38,7 +18,9 @@ const AskPage = () => {
 
   // 언어 변경 시 첫 메시지 갱신 (대화 진행 중이 아닐 때만)
   useEffect(() => {
-    setMessages([{ id: 1, role: 'ai', text: ui.askGreeting }])
+    if (messages.length <= 1) {
+      setMessages([{ id: 1, role: 'ai', text: ui.askGreeting }])
+    }
   }, [ui.askGreeting])
 
   useEffect(() => {
@@ -66,18 +48,7 @@ const AskPage = () => {
       const data = await res.json()
       setMessages((prev) => [...prev, { id: Date.now() + 1, role: 'ai', text: data.reply }])
     } catch {
-<<<<<<< HEAD
-      setMessages((prev) => [...prev, { 
-        id: Date.now() + 1, 
-        role: 'ai', 
-        text: '서버 연결에 실패했습니다. 백엔드 서버 상태를 확인하거나 잠시 후 다시 시도해주세요.' 
-      }])
-=======
-      const errorMsg = localStorage.getItem('voda-language') === 'ko' 
-        ? '서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.' 
-        : 'Connection failed. Please try again later.'
-      setMessages((prev) => [...prev, { id: Date.now() + 1, role: 'ai', text: errorMsg }])
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
+      setMessages((prev) => [...prev, { id: Date.now() + 1, role: 'ai', text: ui.askError }])
     } finally {
       setLoading(false)
     }
@@ -91,62 +62,33 @@ const AskPage = () => {
 
   return (
     <div className='flex flex-col h-[calc(100vh-80px)] px-12 py-10 bg-zinc-950'>
-<<<<<<< HEAD
-      <div className="max-w-3xl w-full mx-auto mb-10" />
-=======
       <div className='max-w-3xl w-full mx-auto mb-10' />
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 
       <div
         ref={messagesRef}
         className='flex-1 min-h-0 max-w-3xl w-full mx-auto flex flex-col gap-6 pb-10 overflow-y-auto no-scrollbar'
       >
-<<<<<<< HEAD
-        {messages.map((msg, idx) => (
-          <ChatBubble 
-            key={msg.id} 
-            msg={msg.text} 
-            isAi={msg.role === 'ai'} 
-            animate={msg.role === 'ai' && idx === messages.length - 1 && messages.length > INIT_MESSAGES.length}
-          />
-=======
         {messages.map((msg) => (
           <ChatBubble key={msg.id} msg={msg.text} isAi={msg.role === 'ai'} />
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
         ))}
-        {loading && <ChatBubble msg='VODA AI가 영화를 고르고 있어요...' isAi={true} />}
+        {loading && <ChatBubble msg={ui.loading || '...'} isAi={true} />}
       </div>
 
-<<<<<<< HEAD
       <div className='sticky bottom-0 pb-10 pt-4 max-w-3xl w-full mx-auto flex flex-col gap-5 bg-zinc-950'>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {QUICK_PROMPTS.map((prompt, idx) => (
-            <button
-              key={`prompt-${idx}`}
-              onClick={() => handleSend(prompt)}
-              disabled={loading}
-              className="px-3 py-2 rounded-lg border border-white/5 bg-zinc-900/50 text-zinc-400 text-xs hover:border-primary-400/30 hover:text-primary-400 transition-all cursor-pointer text-center flex items-center justify-center min-h-11 break-keep disabled:opacity-50"
-            >
-              {prompt}
-            </button>
-          ))}
-        </div>
-=======
-      <div className='sticky bottom-0 pb-10 pt-4 max-w-3xl w-full mx-auto flex flex-col gap-5'>
         {messages.length < 3 && (
-          <div className='flex flex-wrap gap-2 justify-start'>
+          <div className='grid grid-cols-2 gap-2'>
             {quickPrompts.map((prompt, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSend(prompt)}
-                className='px-4 py-2 rounded-lg border border-white/5 bg-zinc-900/50 text-zinc-400 text-sm hover:border-primary-400/30 hover:text-primary-400 transition-all cursor-pointer'
+                disabled={loading}
+                className='px-4 py-3 rounded-lg border border-white/5 bg-zinc-900/50 text-zinc-400 text-sm hover:border-primary-400/30 hover:text-primary-400 transition-all cursor-pointer text-center disabled:opacity-50'
               >
                 {prompt}
               </button>
             ))}
           </div>
         )}
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 
         <div className='backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl px-6 py-2 flex items-center gap-4 shadow-2xl focus-within:border-primary-400/50 transition-all'>
           <input

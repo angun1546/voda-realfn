@@ -35,6 +35,8 @@ export const UI = {
     footerSubtitles: '자막 및 음성', footerAudio: '음성 지원', footerHelp: '고객 센터', footerGift: '기프트카드', footerMedia: '미디어 센터', footerIR: '투자 정보(IR)', footerJobs: '입사 정보', footerTerms: '이용 약관', footerPrivacy: '개인정보 처리방침', footerLegal: '법적 고지', footerCookies: '쿠키 설정', footerInfo: '회사 정보', footerContact: '문의하기', footerServiceCode: '서비스 코드', footerCompanyName: '보여주식회사 (VODA)', footerCEO: '대표이사: 주니어 팀원 4인', footerAddress: '서울특별시 강남구 VODA 타워',
     askPrompt1: '비 오는 날 어울리는 로맨스', askPrompt2: '인기 영화 추천', askPrompt3: '긴장감 넘치는 스릴러', askPrompt4: '가족 애니메이션',
     searchResult: "'{q}' 검색 결과", clearSearch: '검색 초기화', searching: '검색 중...', noResult: "'{q}' 검색 결과 없음",
+    detailNoReviews: '아직 등록된 리뷰가 없습니다.', detailSimilar: '비슷한 콘텐츠', fetchError: '데이터를 불러오지 못했습니다.',
+    feedTrendingDay: '오늘의 트렌딩 인물', feedTrendingWeek: '이번 주 트렌딩 인물', focusTitle: '주목할 인물', focusSub: 'VODA가 선택한 스크린의 주역들',
   },
   en: {
     home: 'Home', movie: 'Movies', tv: 'TV Shows', person: 'People', ask: 'Ask AI', search: 'Search', loading: 'Loading...', viewAll: 'View All', back: 'Back',
@@ -52,6 +54,8 @@ export const UI = {
     footerSubtitles: 'Subtitles', footerAudio: 'Audio', footerHelp: 'Help Center', footerGift: 'Gift Cards', footerMedia: 'Media', footerIR: 'IR', footerJobs: 'Jobs', footerTerms: 'Terms', footerPrivacy: 'Privacy', footerLegal: 'Legal', footerCookies: 'Cookies', footerInfo: 'Info', footerContact: 'Contact', footerServiceCode: 'Service Code', footerCompanyName: 'VODA Inc.', footerCEO: 'CEO: 4 Juniors', footerAddress: 'VODA Tower, Seoul',
     askPrompt1: 'Romance for rainy day', askPrompt2: 'Popular movies', askPrompt3: 'Thrilling suspense', askPrompt4: 'Family animation',
     searchResult: "Results for '{q}'", clearSearch: 'Clear', searching: 'Searching...', noResult: "No results for '{q}'",
+    detailNoReviews: 'No reviews yet.', detailSimilar: 'Similar Content', fetchError: 'Failed to load data.',
+    feedTrendingDay: 'Today\'s Trending', feedTrendingWeek: 'This Week\'s Trending', focusTitle: 'People to Watch', focusSub: 'VODA\'s picks for the screen',
   },
 }
 

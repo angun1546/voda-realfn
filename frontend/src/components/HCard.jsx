@@ -1,13 +1,11 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { twMerge } from 'tailwind-merge'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faVolumeXmark, faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
+import { faVolumeXmark, faVolumeHigh, faFilm, faStar } from '@fortawesome/free-solid-svg-icons'
 import { EP } from '../api/tmdb'
-<<<<<<< HEAD
 import useFetch from '../hooks/useFetch'
-=======
 import { getVq } from '../utils/settings'
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 
 const HCard = ({
   id,
@@ -22,23 +20,17 @@ const HCard = ({
   const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)
   const [trailerKey, setTrailerKey] = useState(null)
-<<<<<<< HEAD
-=======
-  const [overview, setOverview] = useState('')
   const [muted, setMuted] = useState(true)
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
   const timerRef = useRef(null)
   const fetched = useRef(false)
   const iframeRef = useRef(null)
 
-  // 마운트 시 detail 미리 로드 — 장르·상영시간·개요 즉시 표시
+  // 상세 데이터 로드
   const { data: detail } = useFetch(() => EP.detail(type, id), [id])
 
-  const genreText   = detail?.genres?.map(g => g.name).join(' · ') || ''
-  const runtimeText = detail?.runtime
-    ? `${detail.runtime}분`
-    : detail?.episode_run_time?.[0] ? `${detail.episode_run_time[0]}분` : ''
-  const overview = detail?.overview || ''
+  const genreText   = detail?.genres?.map(g => g.name).join(' · ') || genre || ''
+  const runtimeText = runtime || detail?.runtime || detail?.episode_run_time?.[0] || ''
+  const overview    = detail?.overview || ''
 
   const findTrailer = (vids) => {
     if (!vids || vids.length === 0) return null
@@ -54,9 +46,8 @@ const HCard = ({
   const handleMouseEnter = () => {
     timerRef.current = setTimeout(() => {
       setHovered(true)
-      if (!fetched.current) {
+      if (!fetched.current && detail) {
         fetched.current = true
-        // detail은 이미 로드됨 — 예고편 key만 세팅
         const allVids = detail?.videos?.results || []
         const koVids  = allVids.filter(v => v.iso_639_1 === 'ko')
         const key = findTrailer(koVids)?.key || findTrailer(allVids)?.key || null
@@ -67,25 +58,23 @@ const HCard = ({
 
   const handleMouseLeave = () => {
     clearTimeout(timerRef.current)
-    if (iframeRef.current) {
-      iframeRef.current.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'mute', args: [] }),
-        '*'
-      )
-    }
     setHovered(false)
     setMuted(true)
   }
 
   const toggleMute = (e) => {
+    e.preventDefault()
     e.stopPropagation()
     if (!iframeRef.current) return
-    const next = !muted
+    
+    const nextMuted = !muted
+    const command = nextMuted ? 'mute' : 'unMute'
+    
     iframeRef.current.contentWindow.postMessage(
-      JSON.stringify({ event: 'command', func: next ? 'mute' : 'unMute', args: [] }),
+      JSON.stringify({ event: 'command', func: command, args: [] }),
       '*'
     )
-    setMuted(next)
+    setMuted(nextMuted)
   }
 
   return (
@@ -93,86 +82,80 @@ const HCard = ({
       onClick={() => navigate(`/${type}/${id}`)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className='w-110 shrink-0 cursor-pointer'
+      className='w-110 shrink-0 cursor-pointer group'
     >
-      <div className='relative rounded-2xl overflow-hidden border-2 border-neutral-800 bg-neutral-900/40 backdrop-blur-md flex flex-col'>
-        {/* 썸네일 */}
-        <div className='aspect-video overflow-hidden'>
+      <div className='relative rounded-2xl overflow-hidden border border-white/5 bg-neutral-900/40 backdrop-blur-md flex flex-col transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-primary-500/10 group-hover:border-white/10'>
+        {/* 썸네일 영역 */}
+        <div className='aspect-video overflow-hidden relative'>
           <img
             src={poster}
             alt={title}
-            className='size-full object-cover transition-transform duration-500 group-hover:scale-105'
+            className='size-full object-cover transition-transform duration-700 group-hover:scale-105'
           />
+          <div className='absolute inset-0 bg-linear-to-t from-neutral-950 via-transparent to-transparent opacity-60' />
         </div>
 
         {/* 카드 하단 정보 */}
-        <div className='p-5 flex flex-col gap-1'>
+        <div className='p-5 flex flex-col gap-1.5'>
           <div className='flex items-center justify-between'>
             {showCurator ? (
-              <span className='text-sm font-bold text-secondary-500'>CURATOR'S CHOICE</span>
+              <span className='text-[10px] font-black text-secondary-500 tracking-tighter uppercase'>CURATOR'S CHOICE</span>
             ) : (
               <span />
             )}
-            <div className='flex items-center gap-1'>
-              <i className='fa-solid fa-star text-primary-400 text-sm' />
-              <span className='text-sm font-bold text-primary-400'>
+            <div className='flex items-center gap-1.5 bg-neutral-800/50 px-2 py-0.5 rounded-full'>
+              <FontAwesomeIcon icon={faStar} className='text-primary-400 text-[10px]' />
+              <span className='text-xs font-bold text-neutral-200'>
                 {vote_average?.toFixed(1)}
               </span>
             </div>
           </div>
-          <h3 className='text-2xl font-regular text-neutral-50 truncate'>{title}</h3>
-          <p className='text-sm text-neutral-400'>
-            {[genre || genreText, runtime ? `${runtime}분` : runtimeText].filter(Boolean).join(' • ')}
+          <h3 className='text-2xl font-bold text-neutral-50 truncate group-hover:text-primary-400 transition-colors'>{title}</h3>
+          <p className='text-xs text-neutral-400 font-medium'>
+            {[genreText.split(' · ')[0], runtimeText ? `${runtimeText}분` : ''].filter(Boolean).join(' • ')}
           </p>
         </div>
 
-        {/* 호버 오버레이 — 카드 전체 덮기 */}
+        {/* 호버 오버레이 (예고편 + 개요) */}
         <div
-          className={`absolute inset-0 flex flex-col bg-neutral-950 transition-opacity duration-300 ${
+          className={twMerge(
+            'absolute inset-0 flex flex-col bg-neutral-950 transition-opacity duration-300 z-20',
             hovered ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
+          )}
         >
-          {/* 예고편 (16:9) */}
-          <div className='relative w-full aspect-video shrink-0 bg-neutral-900'>
+          {/* 예고편 영역 (16:9) */}
+          <div className='relative w-full aspect-video shrink-0 bg-neutral-900 overflow-hidden'>
             {hovered && trailerKey ? (
               <>
                 <iframe
                   ref={iframeRef}
-                  src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}&enablejsapi=1${getVq() ? `&vq=${getVq()}` : ''}`}
-                  className='w-full h-full'
+                  src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}&enablejsapi=1&origin=${window.location.origin}${getVq() ? `&vq=${getVq()}` : ''}`}
+                  className='w-full h-full scale-110'
                   allow='autoplay'
                   title={title}
                 />
-                {/* 음소거 토글 버튼 */}
                 <button
                   onClick={toggleMute}
-                  className='absolute bottom-2 right-2 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-black/60 text-white text-xs hover:bg-black/80 transition-colors'
-                  aria-label={muted ? '소리 켜기' : '소리 끄기'}
+                  className='absolute bottom-3 right-3 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors border border-white/10'
                 >
-                  <FontAwesomeIcon icon={muted ? faVolumeXmark : faVolumeHigh} />
+                  <FontAwesomeIcon icon={muted ? faVolumeXmark : faVolumeHigh} size="xs" />
                 </button>
               </>
             ) : (
               <div className='w-full h-full flex items-center justify-center'>
-                <i className='fa-solid fa-film text-neutral-700 text-3xl' />
+                <FontAwesomeIcon icon={faFilm} className='text-neutral-700 text-3xl' />
               </div>
             )}
           </div>
 
-          {/* 개요 */}
-          <div className='flex flex-col gap-2 p-4 flex-1 overflow-hidden'>
-            <h3 className='text-white font-bold leading-tight truncate'>{title}</h3>
-            {overview ? (
+          {/* 개요 영역 */}
+          <div className='flex flex-col gap-2 p-5 flex-1 overflow-hidden bg-neutral-950'>
+            <h3 className='text-white font-bold text-lg leading-tight truncate'>{title}</h3>
+            <div className='mt-2 border-t border-white/5 pt-3'>
               <p className='text-neutral-400 text-xs leading-relaxed line-clamp-3'>
-                {overview}
+                {overview || '상세 정보를 불러오는 중입니다...'}
               </p>
-            ) : (
-              <div className='flex flex-col gap-1.5 mt-1'>
-                <div className='h-2.5 bg-neutral-800 rounded animate-pulse w-full' />
-                <div className='h-2.5 bg-neutral-800 rounded animate-pulse w-4/5' />
-                <div className='h-2.5 bg-neutral-800 rounded animate-pulse w-3/5' />
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

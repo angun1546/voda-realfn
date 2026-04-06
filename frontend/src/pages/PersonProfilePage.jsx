@@ -14,7 +14,7 @@ const PersonProfilePage = () => {
   const { id } = useParams();
 
   // 2. 인물 상세 정보 데이터 호출 (combined_credits 포함)
-  const { data: person, loading, error } = useFetch(EP.person(id));
+  const { data: person, loading, err } = useFetch(() => EP.person(id), [id]);
 
   // 로딩 및 에러 처리
   if (loading)
@@ -23,7 +23,7 @@ const PersonProfilePage = () => {
         Loading...
       </div>
     );
-  if (error)
+  if (err)
     return (
       <div className="min-h-screen bg-neutral-950 flex items-center justify-center text-red-500">
         인물 정보를 불러오는 데 실패했습니다.
@@ -41,13 +41,13 @@ const PersonProfilePage = () => {
         type="person"
         title={person.name}
         subtitle="CAST" // (선택사항) 이름 위에 표시될 소제목
-        description={person.biography} // (선택사항) 인물 소개글
+        overview={person.biography} // 인물 소개글
         backdrop={person.profile_path} // 배경에 깔릴 흐릿한 이미지
         poster={person.profile_path} // 우측에 3:4 비율로 들어갈 선명한 이미지
       />
 
       {/* 4. 바이오그래피(Biography) 섹션 */}
-      <section className="px-12 md:px-24 py-20 font-['Pretendard']">
+      <section className="px-12 md:px-24 py-20 font-serif">
         {" "}
         <div className="flex items-center gap-2 mb-12">
           <div className="w-3 h-12 bg-primary-400 rounded-full shrink-0" />

@@ -64,7 +64,7 @@ const TVPage = () => {
           <Feed
             type='rank'
             title={ui.trending}
-            sub={ui.popularMovies}
+            subtitle={ui.popularMovies}
             items={rankMovies}
             mediaType='tv'
             link={`/browse/tv/popular?title=${encodeURIComponent(ui.trending)}`}
@@ -75,7 +75,7 @@ const TVPage = () => {
           key={activeTab}
           type='normal'
           title={activeTab === 0 ? ui.todayRecommend : `${genres.find(g => g.id === activeTab)?.name} TV`}
-          sub={ui.todayRecommend}
+          subtitle={ui.todayRecommend}
           items={genreMovies}
           mediaType='tv'
           link={
@@ -88,7 +88,7 @@ const TVPage = () => {
         <Feed
           type='normal'
           title={ui.nowPlaying}
-          sub={ui.trending}
+          subtitle={ui.trending}
           items={newMovies}
           mediaType='tv'
           link={`/browse/tv/on_the_air?title=${encodeURIComponent(ui.nowPlaying)}`}

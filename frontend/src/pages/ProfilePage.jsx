@@ -1,16 +1,10 @@
 import { useState, useEffect } from 'react'
 import Feed from '../components/Feed'
 import { EP } from '../api/tmdb'
-<<<<<<< HEAD
 import ProfileGrid from '../components/ProfileGrid'
 import ReviewCard from '../components/ReviewCard'
 import SectionTitle from '../components/SectionTitle'
-=======
-import ProfileGrid from "../components/ProfileGrid";
-import ReviewCard from "../components/ReviewCard";
-import SectionTitle from "../components/SectionTitle";
 import useUI from '../hooks/useUI'
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 
 // 내가 작성한 리뷰 예시 데이터 (TMDB 실제 경로와 매칭)
 const myReviews = [
@@ -78,32 +72,18 @@ const ProfilePage = () => {
       {/* 시청 중인 콘텐츠 섹션 (Feed) */}
       {popularMovies.length > 0 && (
         <Feed
-<<<<<<< HEAD
           type='play' 
-          title='시청 중인 콘텐츠'
+          title={ui.profileWatching}
           subtitle=''
           items={popularMovies.slice(0, 5)}
           mediaType='movie'
-          link='/browse/movie/popular?title=시청 중인 콘텐츠'
-=======
-          type="play" 
-          title={ui.profileWatching}
-          subtitle=""
-          items={popularMovies.slice(0, 5)}
-          mediaType="movie"
           link={`/browse/movie/popular?title=${ui.profileWatching}`}
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
         />
       )}
 
       {/* 내가 작성한 리뷰 섹션 */}
-<<<<<<< HEAD
       <section className='my-16'>
-        <SectionTitle title='내가 작성한 리뷰' hideAllBtn={true} />
-=======
-      <section className="my-16">
         <SectionTitle title={ui.profileMyReviews} hideAllBtn={true} />
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 
         <div className='grid grid-cols-1 gap-4 w-full mt-4'>
           {(showAllReviews ? myReviews : myReviews.slice(0, 2)).map(review => (
@@ -123,33 +103,21 @@ const ProfilePage = () => {
               onClick={() => setShowAllReviews(!showAllReviews)}
               className='mt-6 mx-auto w-fit px-10 py-2.5 rounded-full border border-white/10 bg-zinc-900/50 text-zinc-400 font-serif text-sm hover:bg-zinc-800 hover:text-primary-400 hover:border-primary-400/30 transition-all cursor-pointer flex items-center gap-2'
             >
-<<<<<<< HEAD
-              <span>{showAllReviews ? '리뷰 접기' : `리뷰 더보기 (${myReviews.length - 2})`}</span>
-              <i className={`fa-solid fa-chevron-${showAllReviews ? 'up' : 'down'} text-2xs`} />
-=======
               <span>{showAllReviews ? ui.profileHideReviews : `${ui.profileMoreReviews} (${myReviews.length - 2})`}</span>
               <i className={`fa-solid fa-chevron-${showAllReviews ? 'up' : 'down'} text-[10px]`} />
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
             </button>
           )}
         </div>
       </section>
 
-<<<<<<< HEAD
-      {/* 프로필 설정 섹션 */}
-      <section className='my-16'>
-        <SectionTitle title='프로필 설정' hideAllBtn={true} />
-=======
       {/* 프로필 설정 섹션 타이틀 */}
-      <section className="my-16">
+      <section className='my-16'>
         <SectionTitle title={ui.profileSettings} hideAllBtn={true} />
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
 
         <div className='mt-4'>
-          <ProfileGrid 
-            user={mockUser} 
-            movies={popularMovies.slice(0, 4)} // 영화 데이터 전달
-            onLogout={() => alert('로그아웃 클릭!')} 
+          <ProfileGrid
+            user={mockUser}
+            onLogout={() => alert('로그아웃 클릭!')}
           />
         </div>
       </section>

@@ -18,7 +18,9 @@
       "Bash(curl:*)",
       "Bash(npm install:*)",
       "Bash(npx eslint:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(.venv/Scripts/python -c \"import fastapi, uvicorn, requests, dotenv, pydantic; print\\(''OK''\\)\")",
+      "Bash(.venv/Scripts/python -c \":*)"
     ]
   }
 }

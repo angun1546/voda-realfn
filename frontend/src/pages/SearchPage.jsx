@@ -53,7 +53,7 @@ const SearchPage = () => {
   return (
     <div className='bg-neutral-950 min-h-screen text-white px-12 py-16'>
       <div className='max-w-2xl mx-auto mb-20'>
-        <h1 className='text-4xl font-bold text-center mb-8 bg-gradient-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent'>
+        <h1 className='text-4xl font-bold text-center mb-8 bg-linear-to-r from-zinc-50 to-zinc-400 bg-clip-text text-transparent'>
           {ui.search}
         </h1>
         <SearchBar 

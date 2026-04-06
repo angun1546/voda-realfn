@@ -64,7 +64,7 @@ const MoviePage = () => {
           <Feed
             type='rank'
             title={ui.trending}
-            sub={ui.popularMovies}
+            subtitle={ui.popularMovies}
             items={rankMovies}
             mediaType='movie'
             link={`/browse/movie/popular?title=${encodeURIComponent(ui.trending)}`}
@@ -75,7 +75,7 @@ const MoviePage = () => {
           key={activeTab}
           type='normal'
           title={activeTab === 0 ? ui.todayRecommend : `${genres.find(g => g.id === activeTab)?.name} ${ui.movie}`}
-          sub={ui.todayRecommend}
+          subtitle={ui.todayRecommend}
           items={genreMovies}
           mediaType='movie'
           link={
@@ -88,15 +88,11 @@ const MoviePage = () => {
         <Feed
           type='normal'
           title={ui.nowPlaying}
-          sub={ui.trending}
+          subtitle={ui.trending}
           items={newMovies}
           mediaType='movie'
           link={`/browse/movie/now_playing?title=${encodeURIComponent(ui.nowPlaying)}`}
         />
-<<<<<<< HEAD
-
-=======
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
       </div>
 
       <ChatBtn />

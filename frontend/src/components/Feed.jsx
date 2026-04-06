@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 import SectionTitle from './SectionTitle'
 import MovieCard from './MovieCard'
@@ -6,7 +7,10 @@ import HCard from './HCard'
 import PersonCard from './PersonCard'
 import { EP } from '../api/tmdb'
 import useWheelScroll from '../hooks/useWheelScroll'
-import useScrollAnim from '../hooks/useScrollAnim'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const Feed = ({
   type = 'normal',
@@ -16,41 +20,60 @@ const Feed = ({
   mediaType = 'movie',
   link = '#',
 }) => {
-  const { ref } = useWheelScroll()
-  const [sectionRef, visible] = useScrollAnim(0.08)
+  const { ref: wheelRef } = useWheelScroll()
+  const sectionRef = useRef(null)
+  const listRef = useRef(null)
+
+  useEffect(() => {
+    if (!sectionRef.current || items.length === 0) return
+
+    // 섹션 내 카드들 선택
+    const cards = listRef.current.querySelectorAll('.feed-card')
+    
+    // GSAP Stagger 애니메이션: 카드가 순차적으로 차르르 나타남
+    gsap.fromTo(cards, 
+      { opacity: 0, x: 40, scale: 0.98 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 90%',
+          toggleActions: 'play none none none'
+        }
+      }
+    )
+  }, [items])
 
   if (!items || items.length === 0) return null
-
-  // 카드별 stagger 딜레이 (80ms 간격, 최대 400ms)
-  const staggerDelay = (idx) => Math.min(idx * 80, 400)
 
   return (
     <section ref={sectionRef} className='w-full'>
       <SectionTitle title={title} subtitle={subtitle} link={link} />
 
-      {/* 카드 리스트 (마우스 휠 가로 스크롤) */}
+      {/* 카드 리스트 영역: useWheelScroll 적용 */}
       <div
-        ref={ref}
+        ref={(el) => {
+          wheelRef(el)
+          listRef.current = el
+        }}
         className={twMerge(
-<<<<<<< HEAD
-          'flex gap-6 overflow-x-auto pb-8 no-scrollbar pt-4 cursor-grab active:cursor-grabbing select-none',
-          type === 'rank' && 'gap-10 pl-10', 
-          type === 'person' && 'gap-8 px-2', 
-=======
           'flex gap-6 overflow-x-auto pb-8 no-scrollbar pt-4 select-none',
-          type === 'rank' && 'gap-10',
+          type === 'rank' && 'gap-10 pl-4',
           type === 'person' && 'gap-8 px-2',
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
         )}
       >
         {items.map((item, idx) => {
           const commonProps = { id: item.id, type: mediaType, title: item.title || item.name }
-          const cardClass = `card-enter shrink-0${visible ? ' is-visible' : ''}`
-          const cardStyle = { transitionDelay: visible ? `${staggerDelay(idx)}ms` : '0ms' }
-
+          
+          let cardContent;
           if (type === 'person') {
-            return (
-              <div key={`person-${item.id}`} className={`w-80 ${cardClass}`} style={cardStyle}>
+            cardContent = (
+              <div className='w-80'>
                 <PersonCard
                   id={item.id}
                   name={item.name}
@@ -59,42 +82,40 @@ const Feed = ({
                 />
               </div>
             )
-          }
-
-          if (type === 'rank') {
-            return (
-              <div key={`rank-${item.id}`} className={cardClass} style={cardStyle}>
-                <RankCard
-                  {...commonProps}
-                  rank={idx + 1}
-                  poster={EP.img(item.poster_path)}
-                  genre={item.genre_ids?.[0] ? (mediaType === 'tv' ? 'TV 시리즈' : '영화') : ''}
-                />
-              </div>
+          } else if (type === 'rank') {
+            cardContent = (
+              <RankCard
+                {...commonProps}
+                rank={idx + 1}
+                poster={EP.img(item.poster_path)}
+                genre={item.genre_ids?.[0] ? (mediaType === 'tv' ? 'TV 시리즈' : '영화') : ''}
+              />
             )
-          }
-
-          if (type === 'play') {
-            return (
-              <div key={`h-${item.id}`} className={cardClass} style={cardStyle}>
-                <HCard
+          } else if (type === 'play') {
+            cardContent = (
+              <HCard
+                {...commonProps}
+                poster={EP.img(item.backdrop_path || item.poster_path, 'w500')}
+                progress={item.progress || 30}
+                vote_average={item.vote_average}
+              />
+            )
+          } else {
+            cardContent = (
+              <div className='min-w-80 w-80'>
+                <MovieCard
                   {...commonProps}
-                  poster={EP.img(item.backdrop_path || item.poster_path, 'w500')}
-                  progress={item.progress || 30}
-                  vote_average={item.vote_average}
+                  genre={item.genre_ids?.[0]}
+                  year={(item.release_date || item.first_air_date)?.slice(0, 4)}
+                  posterUrl={EP.img(item.poster_path)}
                 />
               </div>
             )
           }
 
           return (
-            <div key={`card-${item.id}`} className={`min-w-80 w-80 ${cardClass}`} style={cardStyle}>
-              <MovieCard
-                {...commonProps}
-                genre={item.genre_ids?.[0]}
-                year={(item.release_date || item.first_air_date)?.slice(0, 4)}
-                posterUrl={EP.img(item.poster_path)}
-              />
+            <div key={`${type}-${item.id}-${idx}`} className='feed-card shrink-0 opacity-0'>
+              {cardContent}
             </div>
           )
         })}

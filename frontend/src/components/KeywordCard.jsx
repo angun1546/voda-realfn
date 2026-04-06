@@ -17,7 +17,7 @@ const KeywordCard = ({ title, desc, img }) => {
       />
 
       {/* 그라데이션 오버레이: 하단 텍스트 가독성 확보 */}
-      <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent' />
+      <div className='absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent' />
 
       {/* 텍스트 컨텐츠: 좌측 하단 배치 */}
       <div className='absolute bottom-6 left-6 right-6'>

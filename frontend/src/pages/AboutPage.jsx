@@ -54,19 +54,7 @@ const AboutPage = () => {
         <CastSection cast={data.credits?.cast?.slice(0, 10)} />
 
         {isTv && seasonData && (
-<<<<<<< HEAD
-          <EpisodeSection
-            episodes={seasonData.episodes}
-            seasons={data.seasons}
-            activeSeason={activeSeason}
-            onSeasonChange={(num) => {
-              setActiveSeason(num);
-            }}
-            showTitle={true}
-          />
-=======
           <EpisodeSection episodes={seasonData.episodes} seasons={data.seasons} activeSeason={activeSeason} onSeasonChange={(num) => setActiveSeason(num)} showTitle={true} />
->>>>>>> e1d6e8f (feat: 30개 국어 다국어화 전수 적용 및 비디오 트레일러 이탈 시 사운드 정지 로직 수정)
         )}
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start pt-6">
