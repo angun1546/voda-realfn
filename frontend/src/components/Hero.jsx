@@ -190,22 +190,22 @@ const Hero = ({
   
   if (type === 'person') {
     return (
-      <section className='relative w-full h-150 flex items-center overflow-hidden bg-neutral-950 text-white'>
+      <section className='relative w-full h-[50vh] md:h-150 flex items-center overflow-hidden bg-neutral-950 text-white'>
         <div className='absolute inset-0'>
           <img src={EP.bg(backdrop)} alt='' className='size-full object-cover object-top blur-2xl opacity-50 scale-110' />
           <div className='absolute inset-0 bg-linear-to-r from-neutral-950 via-neutral-950/40 to-transparent' />
           <div className='absolute inset-0 bg-linear-to-t from-neutral-950 via-transparent to-transparent' />
         </div>
-        <div className='relative z-30 w-full px-12 md:px-20 flex flex-row items-center gap-12 md:gap-20'>
+        <div className='relative z-30 w-full px-6 md:px-20 flex flex-row items-center gap-12 md:gap-20'>
           {poster && (
-            <div className='hidden md:block shrink-0 w-80 aspect-3/4 rounded-2xl overflow-hidden shadow-2xl border border-white/10'>
+            <div className='hidden lg:block shrink-0 w-80 aspect-3/4 rounded-2xl overflow-hidden shadow-2xl border border-white/10'>
               <img src={EP.img(poster, 'w500')} alt={title} className='size-full object-cover' />
             </div>
           )}
           <div className='flex flex-col items-start max-w-2xl text-left'>
-            {subtitle && <p className='text-primary-400 text-lg font-bold tracking-widest uppercase mb-4 font-serif'>{subtitle}</p>}
-            <h1 className='text-6xl md:text-7xl font-bold mb-6 font-serif leading-tight'>{title}</h1>
-            {overview && <p className='text-lg md:text-xl text-neutral-300 leading-relaxed font-serif line-clamp-6 whitespace-pre-wrap'>{overview}</p>}
+            {subtitle && <p className='text-primary-400 text-sm md:text-lg font-bold tracking-widest uppercase mb-2 md:mb-4 font-serif'>{subtitle}</p>}
+            <h1 className='text-4xl md:text-7xl font-bold mb-4 md:mb-6 font-serif leading-tight'>{title}</h1>
+            {overview && <p className='text-base md:text-xl text-neutral-300 leading-relaxed font-serif line-clamp-3 md:line-clamp-6 whitespace-pre-wrap'>{overview}</p>}
           </div>
         </div>
       </section>
@@ -213,40 +213,42 @@ const Hero = ({
   }
 
   return (
-    <section className='relative w-full h-[85vh] min-h-175 overflow-hidden text-white'>
+    <section className='relative w-full h-[60vh] md:h-[85vh] md:min-h-175 overflow-hidden text-white'>
       {renderBackground()}
 
       {type === 'detail' && (
         <button 
           onClick={() => navigate(-1)}
-          className='absolute top-32 left-12 md:left-20 z-30 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors cursor-pointer group'
+          className='absolute top-20 md:top-32 left-6 md:left-20 z-30 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors cursor-pointer group'
         >
           <FontAwesomeIcon icon={faChevronLeft} className='group-hover:-translate-x-1 transition-transform' />
-          <span className='font-medium'>뒤로가기</span>
+          <span className='font-medium text-sm md:text-base'>뒤로가기</span>
         </button>
       )}
 
-      <div className='relative h-full flex flex-col justify-center px-12 md:px-20 max-w-5xl gap-6 z-30'>
+      <div className='relative h-full flex flex-col justify-center px-6 md:px-20 max-w-5xl gap-4 md:gap-6 z-30'>
         {rating && (
-          <div className='flex items-center gap-2 text-secondary-400 font-bold text-lg'>
+          <div className='flex items-center gap-2 text-secondary-400 font-bold text-sm md:text-lg'>
             <FontAwesomeIcon icon={faStar} />
             <span>{rating.toFixed(1)}</span>
           </div>
         )}
-        <h1 className='text-6xl md:text-8xl font-bold tracking-tighter drop-shadow-2xl font-serif leading-none'>{title}</h1>
-        <p className='text-lg md:text-xl text-neutral-300 leading-relaxed max-w-2xl line-clamp-3 font-serif font-medium'>{overview}</p>
+        <h1 className='text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter drop-shadow-2xl font-serif leading-none'>{title}</h1>
+        <p className='text-base md:text-xl text-neutral-300 leading-relaxed max-w-2xl line-clamp-3 font-serif font-medium'>{overview}</p>
         
-        <div className='flex items-center gap-4 mt-4'>
+        <div className='flex flex-wrap items-center gap-3 md:gap-4 mt-2 md:mt-4'>
           <DetailBtn label='지금 시청하기' icon={<FontAwesomeIcon icon={faPlay} />} variant='primary' onClick={handleWatchNow} />
           <button
             onClick={() => setIsWishlisted(prev => !prev)}
-            className={`flex items-center justify-center gap-2 rounded-full font-semibold px-7 py-3.5 transition-all ${isWishlisted ? 'bg-primary-500 text-white border-primary-500' : 'bg-white/10 hover:bg-white/20 border border-white/20 text-white backdrop-blur-md'}`}
+            className={`flex items-center justify-center gap-2 rounded-full font-semibold px-7 py-3.5 transition-all !text-white ${isWishlisted ? 'bg-primary-500 border-primary-500' : 'bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md'}`}
           >
-            <FontAwesomeIcon icon={isWishlisted ? faHeart : faPlus} />
-            <span className='font-serif'>{isWishlisted ? '찜!' : '찜하기'}</span>
+            <FontAwesomeIcon icon={isWishlisted ? faHeart : faPlus} className='!text-white' />
+            <span className='font-serif !text-white'>{isWishlisted ? '찜!' : '찜하기'}</span>
           </button>
           {type !== 'detail' && (
-            <DetailBtn label='상세 정보' icon={<FontAwesomeIcon icon={faInfoCircle} />} variant='secondary' onClick={() => navigate(`/${type}/${id}`)} />
+            <div className='hidden sm:block'>
+              <DetailBtn label='상세 정보' icon={<FontAwesomeIcon icon={faInfoCircle} />} variant='secondary' onClick={() => navigate(`/${type}/${id}`)} />
+            </div>
           )}
         </div>
       </div>

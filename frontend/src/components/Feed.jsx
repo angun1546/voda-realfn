@@ -73,7 +73,7 @@ const Feed = ({
           let cardContent;
           if (type === 'person') {
             cardContent = (
-              <div className='w-80'>
+              <div className='w-40 md:w-80'>
                 <PersonCard
                   id={item.id}
                   name={item.name}
@@ -102,7 +102,7 @@ const Feed = ({
             )
           } else {
             cardContent = (
-              <div className='min-w-80 w-80'>
+              <div className='w-44 md:w-80'>
                 <MovieCard
                   {...commonProps}
                   genre={item.genre_ids?.[0]}

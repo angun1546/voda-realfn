@@ -35,11 +35,11 @@ const HomePage = () => {
   if (loading) return <div className='p-20 text-center text-zinc-500'>{ui.loading}</div>
 
   return (
-    <div className='bg-neutral-950 min-h-screen pb-32'>
+    <div className='bg-neutral-950 min-h-screen pb-20 md:pb-32'>
       {/* 히어로 슬라이더 섹션 (자동 재생 및 영상 배경 지원) */}
       <HeroSwiper items={heroItems} type='movie' />
 
-      <div className='px-12 mt-2 flex flex-col gap-16'>
+      <div className='px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20 mt-4 md:mt-8 flex flex-col gap-10 md:gap-20 lg:gap-24'>
         
         {/* 1. 이어보기 섹션 */}
         <Feed
