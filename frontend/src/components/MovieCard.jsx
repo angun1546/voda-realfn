@@ -143,13 +143,13 @@ const MovieCard = ({ id, type = 'movie', title, genre, year, badgeText, posterUr
       </div>
 
       {/* 카드 하단 기본 텍스트 */}
-      <div className='flex flex-col px-1 mt-1'>
-        <h3 className='text-lg font-bold text-neutral-100 truncate group-hover:text-primary-400 transition-colors'>
+      <div className='flex flex-col px-1 mt-1 md:mt-1'>
+        <h3 className='text-sm md:text-lg font-bold text-neutral-100 truncate group-hover:text-primary-400 transition-colors'>
           {title}
         </h3>
-        <div className='flex items-center gap-2 text-xs text-neutral-500 mt-1 font-medium'>
+        <div className='flex items-center gap-2 text-[10px] md:text-xs text-neutral-500 mt-0.5 md:mt-1 font-medium'>
           <span className='truncate'>{genreText.split(' · ')[0]}</span>
-          <span className='text-[10px] opacity-30'>•</span>
+          <span className='text-[8px] md:text-[10px] opacity-30'>•</span>
           <span>{yearText}</span>
         </div>
       </div>

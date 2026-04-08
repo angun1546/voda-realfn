@@ -3,6 +3,7 @@ import { useEffect, useRef, useMemo } from 'react'
 import GNB from './components/GNB'
 import Footer from './components/Footer'
 import ChatBtn from './components/ChatBtn'
+import BottomNav from './components/BottomNav'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
@@ -73,6 +74,7 @@ const Layout = () => {
       </main>
       <Footer />
       {!isAskPage && <ChatBtn />}
+      <BottomNav />
     </div>
   )
 }
