@@ -68,7 +68,7 @@ const GNB = () => {
         <div className='flex items-center gap-3 md:gap-6 lg:gap-8'>
           <form onSubmit={handleSearch} className='flex items-center gap-2 md:gap-3 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md'>
             <Link to='/find' className='flex items-center'><FontAwesomeIcon icon={faSearch} className='text-neutral-400 text-base md:text-lg hover:text-primary-400 transition-colors cursor-pointer' /></Link>
-            <input type='text' value={query} onChange={(e) => setQuery(e.target.value)} placeholder={ui.search} className='bg-transparent font-serif text-sm md:text-base lg:text-xl text-neutral-50 placeholder:text-neutral-500 w-24 sm:w-40 md:w-52 lg:w-72 outline-none' />
+            <input type='text' value={query} onChange={(e) => setQuery(e.target.value)} placeholder={ui.search} className='bg-transparent font-serif text-sm md:text-base lg:text-xl !text-white placeholder:text-neutral-500 w-24 sm:w-40 md:w-52 lg:w-72 outline-none' />
           </form>
 
           <div className='relative flex items-center justify-center'>

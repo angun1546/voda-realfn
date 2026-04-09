@@ -9,13 +9,15 @@ import { useNavigate } from 'react-router'
 const MoodGrid = ({ moods = [] }) => {
   const navigate = useNavigate()
   
-  // Bento 그리드 배치 스타일 (반응형 대응)
-  const gridStyles = [
-    'col-span-2 row-span-2 md:col-span-2 md:row-span-2', // 1번째: 대형
-    'col-span-2 row-span-1 md:col-span-2 md:row-span-1', // 2번째: 가로 와이드
-    'col-span-1 row-span-1 md:col-span-1 md:row-span-1', // 3번째: 소형
-    'col-span-1 row-span-1 md:col-span-1 md:row-span-1'  // 4번째: 소형
-  ]
+  // 무드 클릭 시 검색/브라우즈 페이지로 이동
+  const handleMoodClick = (mood) => {
+    const { mediaType, category, genre, title } = mood
+    const path = genre 
+      ? `/browse/${mediaType}/${category}?genre=${genre}&title=${encodeURIComponent(title)}`
+      : `/browse/${mediaType}/${category}?title=${encodeURIComponent(title)}`
+    
+    navigate(path)
+  }
 
   if (!moods || moods.length === 0) return null
 

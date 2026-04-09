@@ -56,7 +56,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
   if (!isOpen) return null
 
   return (
-    <div className='fixed bottom-28 right-8 z-50 flex h-168.75 w-120 flex-col overflow-hidden rounded-3xl border-1.5 border-white/10 bg-white/5 shadow-2xl backdrop-blur-2xl'>
+    <div className='fixed bottom-28 right-8 z-50 flex h-[600px] w-[450px] max-h-[80vh] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/10 shadow-2xl backdrop-blur-3xl'>
       <div className='shrink-0 bg-primary-500 px-6 py-5'>
         <div className='flex items-center justify-between'>
           <span className='font-serif text-xl font-bold leading-8 text-neutral-950'>
@@ -73,7 +73,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
         </div>
       </div>
 
-      <div className='flex-1 overflow-y-auto px-6 py-6 space-y-4'>
+      <div className='flex-1 overflow-y-auto px-6 py-6 space-y-4 scroll-smooth'>
         {messages.map((msg) =>
           msg.role === 'ai' ? (
             <div key={msg.id} className='flex justify-start'>
