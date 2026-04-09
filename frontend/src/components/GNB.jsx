@@ -30,10 +30,11 @@ const GNB = () => {
 
   const linkStyle = ({ isActive }) =>
     twMerge(
-      'font-serif text-sm md:text-base lg:text-xl font-bold tracking-tight transition-colors pb-2 border-b-4 whitespace-nowrap !text-primary-400',
+      'relative font-serif text-sm md:text-base lg:text-xl font-bold tracking-tight transition-colors pb-3 whitespace-nowrap !text-primary-400',
+      'after:content-[""] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:rounded-full after:transition-all duration-300',
       isActive
-        ? 'border-primary-400'
-        : 'border-transparent hover:border-primary-400',
+        ? 'after:bg-white'
+        : 'after:bg-transparent hover:after:bg-white/60',
     )
 
   const handleSearch = (e) => {
